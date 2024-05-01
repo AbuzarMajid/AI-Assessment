@@ -30,6 +30,7 @@ class FunctionCallingPipeline:
             if hasattr(function_calling_response_obj, function):
                 func_to_call = getattr(function_calling_response_obj, function)
                 response = func_to_call()
+                print(response)
                 logging.info(f'{function} function called')
 
                 completion = func_call_vars.submit_tool_output(thread_id=self.thread_id, function_response=response, run_id=self.run_id)

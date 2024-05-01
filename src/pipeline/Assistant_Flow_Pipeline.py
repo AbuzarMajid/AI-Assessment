@@ -23,7 +23,7 @@ class AssistantFlow:
             assistant_obj = Assistants(client=self.client, model_name=self.model_name, skill_name=self.skill_name)
             thread_id, assisstant_id = assistant_obj.question_generation()
 
-            content = f"Generate {self.number_of_questions} {self.difficulty_level} questions for the category {self.category}. Make sure no questions would take more than 2.5 minutes to answer"
+            content = f"Generate {self.number_of_questions} {self.difficulty_level} questions for the category {self.category}. Make sure to include query and table if needed only. Make sure no questions would take more than 2.5 minutes to answer"
             
             create_message = Messages(client=self.client, thread_id=thread_id)
             message = create_message.create_messages(role=self.role, content=content)
