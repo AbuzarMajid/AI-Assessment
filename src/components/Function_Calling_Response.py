@@ -17,11 +17,11 @@ class FunctonCallingResponse:
             if self.skill_name == "sql":
                 response = FunctionCallingResponses.sql_easy_level_topics
             if self.skill_name == "python":
-                response = FunctionCallingResponses.python_easy_level_topics
+                response = FunctionCallingResponses.python_easy_level_questions
             if self.skill_name == "ml":
-                response = FunctionCallingResponses.ml_easy_level_topics
+                response = FunctionCallingResponses.ml_easy_level_questions
             if self.skill_name == "statistics":
-                response = FunctionCallingResponses.statistics_easy_level_topics
+                response = FunctionCallingResponses.statistics_easy_level_questions
 
             logging.info(f'Content fetched for easy_level_topics')
             return response
@@ -33,11 +33,11 @@ class FunctonCallingResponse:
             if self.skill_name == "sql":
                 response = FunctionCallingResponses.sql_medium_level_topics
             if self.skill_name == "python":
-                response = FunctionCallingResponses.python_medium_level_topics
+                response = FunctionCallingResponses.python_medium_level_questions
             if self.skill_name == "ml":
                 response = FunctionCallingResponses.ml_medium_level_topics
             if self.skill_name == "statistics":
-                response = FunctionCallingResponses.statistics_medium_level_topics
+                response = FunctionCallingResponses.statistics_medium_level_questions
 
             logging.info(f'Content fetched for medium_level_topics')
             return response
@@ -47,13 +47,13 @@ class FunctonCallingResponse:
     def generate_advanced_level_questions(self):
         try:
             if self.skill_name == "sql":
-                response = FunctionCallingResponses.sql_advanced_level_questions
+                response = FunctionCallingResponses.sql_hard_level_questions
             if self.skill_name == "python":
-                response = FunctionCallingResponses.python_hard_level_topics
+                response = FunctionCallingResponses.python_hard_level_questions
             if self.skill_name == "ml":
                 response = FunctionCallingResponses.ml_hard_level_topics
             if self.skill_name == "statistics":
-                response = FunctionCallingResponses.statistics_hard_level_topics
+                response = FunctionCallingResponses.statistics_hard_level_questions
 
             logging.info(f'Content fetched for advanced_level_topics')
             return response

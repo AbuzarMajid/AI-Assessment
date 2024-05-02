@@ -93,7 +93,7 @@ Answer Type: Video, audio.
 Content: Pose hypothetical changes or challenges in data scenarios and ask candidates to explain how they would adjust their statistical approach (e.g., how to handle missing data, what to do if the data violates the assumption of normality in ANOVA).
 
 
-Output Format:
+Output Format: JSON
 Problem Statement: (Do not give any hints or clue to solve the question)
 Answer Type: Audio or video
 Topics Covered:
@@ -126,12 +126,9 @@ Question categories
 6. Handling Specific Data Challenges (What If Questions): Present candidates with real-world data challenges and scenarios. Candidates must explain how they would use Python to manage these situations effectively. Answer type would be video or audio, allowing candidates to explain their approach.
 
 Output Format: JSON
-Problem Statement: (this includes anything needed like SQL query table, question statement. Do not give a clue how to solve that. Craft a proper Problem statement)
-Query: (if needed)
-Database Schema and Table: (If needed)
+Problem Statement: (this includes anything needed like question statement. Do not give a clue how to solve that. Craft a proper Problem statement)
 Answer Type: Audio or video / Coding/ Fill in the blanks/ Multiple Choice (choose only one)
 Topics Covered:
-Common Mistakes:
 Estimated Time to solve:
 Grading criteria parameters: (Generate one liner about the compulsory things that need to be tested for a specific question)
 
@@ -253,7 +250,7 @@ PERCENTILE_CONT(), PERCENTILE_DISC() for percentile calculations
 WITH clause for CTE definition
 Ranking Functions: ROW_NUMBER(), RANK(), DENSE_RANK(), NTILE"""
 
-    sql_advanced_level_questions = """---Advanced Level Topics:
+    sql_hard_level_questions = """---Advanced Level Topics:
 
 Nested SELECT statements for subqueries
 Union Function vs JOIN
@@ -376,7 +373,7 @@ Overfitting and underfitting, confounding factors
 Import CSV files from a URL via Pandas
 """
 
-    python_advanced_level_questions = """Asynchronous Handling: multithreading,  multiprocessing async IO functionality and differences
+    python_hard_level_questions = """Asynchronous Handling: multithreading,  multiprocessing async IO functionality and differences
 Pydantic: used to define custom data types
 Memory management and garbage collection
 Advanced Pandas:
