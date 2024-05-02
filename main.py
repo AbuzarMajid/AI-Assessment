@@ -43,9 +43,9 @@ async def questions_generation(request: AssistantResponseRequest):
                 futures.append(future)
 
             # Wait for all tasks to complete
-        for future in concurrent.futures.as_completed(futures):
+        for future in (futures):
             response = future.result()
-            responses.append(json.loads(response))
+            responses.append(response)
             # responses.extend(response)
             
 

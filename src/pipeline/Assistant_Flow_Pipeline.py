@@ -76,5 +76,4 @@ class AssistantFlow:
                 break
                 
         except Exception as e:
-            logging.exception("An exception occurred:")
             raise CustomExcetions(e, sys)
