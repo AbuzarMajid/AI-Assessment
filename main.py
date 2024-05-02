@@ -34,7 +34,7 @@ async def questions_generation(request: AssistantResponseRequest):
             futures = []
             for skill in request.skill_list:
                 category = categories(skill_name=skill, number_of_questions=request.number_of_questions)
-                assistant_obj = AssistantFlow(client=client, model_name=models[0], 
+                assistant_obj = AssistantFlow(client=client, model_name=models[1], 
                                             difficulty_level=request.difficulty, 
                                             category=category, 
                                             number_of_questions=request.number_of_questions, 
@@ -43,10 +43,10 @@ async def questions_generation(request: AssistantResponseRequest):
                 futures.append(future)
 
             # Wait for all tasks to complete
-        for future in (futures):
-            response = future.result()
-            responses.append(response)
-            # responses.extend(response)
+            for future in (futures):
+                response = future.result()
+                responses.append(response)
+                # responses.extend(response)
             
 
         return responses

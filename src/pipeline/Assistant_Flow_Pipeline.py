@@ -26,7 +26,7 @@ class AssistantFlow:
             content = f"Generate {self.number_of_questions} {self.difficulty_level} questions for the category {self.category}. Make sure to include query and table if needed only. Make sure no questions would take more than 2.5 minutes to answer"
             
             create_message = Messages(client=self.client, thread_id=thread_id)
-            message = create_message.create_messages(role=self.role, content=content)
+            message = create_message.create_messages(role = self.role, content = content)
             logging.info('Message created in thread successfully')
             
             create_run = CreateRun(assistant_id=assisstant_id, thread_id=thread_id, client=self.client)

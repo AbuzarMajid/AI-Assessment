@@ -20,6 +20,7 @@ class FunctionCalling:
     def _tool_call_id(self):
         try:
             tool_call_id = self.run_retrieved.required_action.submit_tool_outputs.tool_calls[0]
+            print(tool_call_id)
             logging.info('Tool Call ID retrieved')
             return tool_call_id.id
         except Exception as e:

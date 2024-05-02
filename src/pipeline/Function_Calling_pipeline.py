@@ -19,6 +19,7 @@ class FunctionCallingPipeline:
             logging.info('Entered the Assistant')
             func_call_vars = FunctionCalling(client=self.client, run_retrieved=self.run_retrieved)
             function = func_call_vars.function_name()
+            print(function)
             logging.info('Function name fetched')
 
             function_calling_response_obj = FunctonCallingResponse(
