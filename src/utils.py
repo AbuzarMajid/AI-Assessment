@@ -46,6 +46,19 @@ def python_get_categories(n):
     
     return " and ".join(selected_categories)
 
+def ml_categories(n):
+    list_of_categories = [
+        "Explaining/Analyzing a Machine Learning Algorithm",
+        "Explain Machine Learning Concepts (Differences/Use Cases)",
+        "Scenario-Based Machine Learning Problems", 
+        "Handling Specific Data Challenges in Mahcine Learning (What if questions)"
+    ]
+    
+    # Choose n number of categories randomly
+    selected_categories = random.sample(list_of_categories, n)
+    
+    return " and ".join(selected_categories)
+
 def categories(skill_name, number_of_questions):
     if "sql" in skill_name:
         return sql_get_category(n=number_of_questions)
@@ -53,11 +66,14 @@ def categories(skill_name, number_of_questions):
         return statistics_get_category(n=number_of_questions)
     if "python" in skill_name:
         return  python_get_categories(n=number_of_questions)
+    if "ml" in skill_name:
+        return ml_categories(n=number_of_questions)
 
 def post_processing(questions):    
     sql_questions = []
     python_questions = []
     statistics_questions = []
+    ml_questions = []
 
     for section in questions:
         if "sql_questions" in section:
@@ -66,6 +82,8 @@ def post_processing(questions):
             python_questions.extend(section["python_questions"])
         elif "statistics_questions" in section:
             statistics_questions.extend(section["statistics_questions"])
+        elif "ml_questions" in section:
+            ml_questions.extend(section["ml_questions"])
 
     # Adding necessary fields for SQL questions if not present
     for sql_question in sql_questions:
@@ -105,6 +123,16 @@ def post_processing(questions):
         if "Grading criteria parameters" not in stat_question:
             stat_question["Grading criteria parameters"] = ""
 
+    for ml_question in ml_questions:
+        if "Topics Covered" not in ml_question:
+            ml_question["Topics Covered"] = ""
+        if "Answer Type" not in ml_question:
+            ml_question["Answer Type"] = ""
+        if "Estimated Time to solve" not in ml_question:
+            ml_question["Estimated Time to solve"] = ""
+        if "Grading criteria parameters" not in ml_question:
+            ml_question["Grading criteria parameters"] = ""
+
     # Creating separate dictionaries for SQL, Python, and Statistics questions
     processed_questions = {}
     if sql_questions:
@@ -113,6 +141,8 @@ def post_processing(questions):
         processed_questions["python_questions"] = python_questions
     if statistics_questions:
         processed_questions["statistics_questions"] = statistics_questions
+    if ml_questions:
+        processed_questions["ml_questions"] = ml_questions
     
     return processed_questions
 

@@ -12,7 +12,6 @@ class FunctionCalling:
         # everytime when the function calling will be called the status will change to requires action
         try:
             function_name = self.run_retrieved.required_action.submit_tool_outputs.tool_calls[0].function.name
-            logging.info('function name retrieved')
             return function_name
         except Exception as e:
             raise CustomExcetions(e, sys)
@@ -23,7 +22,6 @@ class FunctionCalling:
             for toll_call in (self.run_retrieved.required_action.submit_tool_outputs.tool_calls):
                 tool_call_ids.append(toll_call.id)
 
-            logging.info('Tool Call ID retrieved')
             return tool_call_ids
         except Exception as e:
             raise CustomExcetions(e, sys)

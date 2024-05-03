@@ -21,32 +21,35 @@ class Assistants:
                     name="SQL Question generation",
                     tools=[function_calling_tools.generate_easy_questions, function_calling_tools.generate_medium_questions, function_calling_tools.generate_advanced_level_questions],
                     model=self.model_name,
-                    temperature=0.4,
+                    temperature=0.2,
                     response_format= { "type": "json_object" }
                 )
-                assistant_id = assistant.id
+                sql_assistant_id = assistant.id
+                return sql_assistant_id
 
             if self.skill_name == "python":
                 assistant = self.client.beta.assistants.create(
                     instructions=Prompts.python_assisstant_instructions,
-                    name="SQL Question generation",
+                    name="Python Question generation",
                     tools=[function_calling_tools.generate_easy_questions, function_calling_tools.generate_medium_questions, function_calling_tools.generate_advanced_level_questions],
                     model=self.model_name,
-                    temperature=0.4,
+                    temperature=0.2,
                     response_format= { "type": "json_object" }
                 )
-                assistant_id = assistant.id
+                python_assistant_id = assistant.id
+                return python_assistant_id
 
             if self.skill_name == "ml":
                 assistant = self.client.beta.assistants.create(
                     instructions=Prompts.ML_assistant_instructions,
-                    name="SQL Question generation",
+                    name="ML Question generation",
                     tools=[function_calling_tools.generate_easy_questions, function_calling_tools.generate_medium_questions, function_calling_tools.generate_advanced_level_questions],
                     model=self.model_name,
-                    temperature=0.4,
+                    temperature=0.2,
                     response_format= { "type": "json_object" }
                 )
-                assistant_id = assistant.id
+                ml_assistant_id = assistant.id
+                return ml_assistant_id
 
             if self.skill_name == "statistics":
                 assistant = self.client.beta.assistants.create(
@@ -57,15 +60,32 @@ class Assistants:
                     temperature=0.4,
                     response_format= { "type": "json_object" }
                 )
-                assistant_id = assistant.id
-            
-            logging.info(f'{self.skill_name} Assistant defined')
-
-            #defining a thread for that assistant
-            thread = self.client.beta.threads.create()
-            thread_id = thread.id
-            logging.info('Thread defined for JD given assisatant')
-            return thread_id, assistant_id
-        
+                statistics_assistant_id = assistant.id
+                return statistics_assistant_id
+                
         except Exception as e:
             raise CustomExcetions(e, sys)
+        
+    def fetch_assisstant_id(self):
+        if self.skill_name == "sql":
+            thread = self.client.beta.threads.create()
+            return thread.id, "asst_rCkqSH8D3rTRL9U7k29WlkKM"
+        
+        if self.skill_name == "python":
+            thread = self.client.beta.threads.create()
+            return thread.id, 'asst_rJKprAt1CfkgINDeSEMWuKGP'
+        
+        if self.skill_name == "ml":
+            thread = self.client.beta.threads.create()
+            return thread.id, 'asst_5ybd58oa52cFV8IVyczOfe9K'
+        
+        if self.skill_name == "statistics":
+            thread = self.client.beta.threads.create()
+            return thread.id, 'asst_vGxuHyE6l7YCXpZdmxAFmlJy'
+
+        
+
+        
+
+            
+

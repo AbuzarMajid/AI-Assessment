@@ -14,7 +14,6 @@ class CreateRun:
             run = self.client.beta.threads.runs.create(
             thread_id=self.thread_id,
             assistant_id=self.assistant_id)
-            logging.info('Successfully Created Run')
             return run
         except Exception as e:
             raise CustomExcetions(e, sys)

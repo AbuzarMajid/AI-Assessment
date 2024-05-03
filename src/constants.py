@@ -104,7 +104,7 @@ Output Format: JSON
             Problem Statement: (this includes anything needed question statement. Do not give a clue how to solve that. Craft a proper Problem statement)
             Answer Type: Audio or video / Coding
             Topics Covered: (topics covered in question)
-            Estimated Time to solve: "<only a number representing minutes>"
+            Estimated Time to solve: "<only a number representing minutes>"(max 2.5 minutes)
             Grading criteria parameters: (Generate one liner about the compulsory things that need to be tested for a specific question)
         }
     ]
@@ -153,7 +153,42 @@ Output Format: JSON
 Do not discuss any function/command while asking question
 Mimic the way a recruiter is asking in an interactive way"""
 
-    ML_assistant_instructions = """"""
+    ML_assistant_instructions = """Role: You are an Machine Learning expert and using your expertise in this domain you have to generate questions as per the user requirement. Using the content provided in the function generate as many questions as user wants
+
+User will be asking for multiple number of questions to be generated. Run "generate_easy_questions", "generate_medium_questions" or "generate_advanced_level_questions" to gather the content needed to generate a variety of questions. Run functions only one time irrespective of the number of  questions asked
+
+**For multiple questions you are allowed to switch Answer types
+**When generating more than one question talk about multiple topics in different questions under Data Science domain
+**Ask questions, Make scenarios all under the tree of Data Science
+**Do not disclose anything in the problem statement that is needed in solution
+**Please generate questions that are specifically relevant to the day-to-day scenarios and real-world problems faced by Data Scientists regarding Machine Learning
+**Do not mention any helping material that you are expecting from candidate to use
+**Structure the question so that it has only one answer type.
+**Make sure to explore wide range of topics under data science while generating multiple questions
+
+Question Categories:
+1. Explaining/Analyzing a Machine Learning Algorithm: Candidates are presented with a specific machine learning algorithm and asked to explain how it works or analyze its performance on a given dataset. Answer type: video or audio.
+2. Explain Machine Learning Concepts (Differences/Use Cases): Present two or more concepts, such as variance vs bias etc. Candidates must explain the differences between these concepts and discuss their respective use cases in real-world scenarios. Answer type could be video, audio, allowing candidates to choose the correct concept for a given scenario.
+3. Scenario-Based Machine Learning Problems: Candidates are presented with a real-world scenario and asked to solve a problem using machine learning techniques. Answer type: video or audio.
+4. Handling Specific Data Challenges in Machine Learning: Candidates are given a scenario involving challenges with data preprocessing, feature engineering, or model selection, and asked to explain how they would address these challenges. Answer type: video or audio.
+
+
+Output Format: JSON
+{ "ml_questions": 
+    [
+        {
+            Problem Statement: (this includes anything needed question statement. Do not give a clue how to solve that. Craft a proper Problem statement)
+            Answer Type: Audio or video
+            Topics Covered: (topics covered in question)
+            Estimated Time to solve: "<only a number representing minutes>"(2.5 mins max)
+            Grading criteria parameters: (Generate one liner about the compulsory things that need to be tested for a specific question)
+        }
+    ]
+}
+
+
+Do not discuss any helping material while asking question
+Mimic the way a recruiter is asking in an interactive way"""
 
 @dataclass
 class FunctionCallingTools:
@@ -219,7 +254,7 @@ class FunctionCallingTools:
 
 @dataclass
 class FunctionCallingResponses:
-    sql_easy_level_topics = """---Entry Level Topics
+    sql_easy_level_topics = """
 This entry level skills are needed to test candidates if they have the basic knowledge of SQL working
 Basic aggregation functions (COUNT, SUM, AVG, COUNT DISTINCT)
 DISTINCT ON
@@ -240,7 +275,7 @@ Rounding numerical values with the ROUND function
 Concatenating strings with the CONCAT function
 Math functions (ABS(), CEIL(), FLOOR())"""
 
-    sql_medium_level_topics = """---Mid Level Topics
+    sql_medium_level_topics = """
 The medium level should challenge candidates to demonstrate more advanced SQL knowledge and problem-solving skills:
 
 ROW_NUMBER()
@@ -267,8 +302,7 @@ PERCENTILE_CONT(), PERCENTILE_DISC() for percentile calculations
 WITH clause for CTE definition
 Ranking Functions: ROW_NUMBER(), RANK(), DENSE_RANK(), NTILE"""
 
-    sql_hard_level_questions = """---Advanced Level Topics:
-
+    sql_hard_level_questions = """
 Nested SELECT statements for subqueries
 Union Function vs JOIN
 String Functions: CONCAT(), SUBSTRING(), CHAR_LENGTH(), LOWER(), UPPER()
@@ -322,7 +356,7 @@ PERCENTILE_CONT(), PERCENTILE_DISC() for percentile calculations
 WITH clause for CTE definition
 Ranking Functions: ROW_NUMBER(), RANK(), DENSE_RANK(), NTILE()"""
 
-    python_easy_level_questions = """Python Syntax and Semantics:
+    python_easy_level_topics = """Python Syntax and Semantics:
 Basic data types (int, float, string, boolean)
 Arithmetic, comparison, and logical operators
 The '//' operator for floor division
@@ -361,7 +395,7 @@ Enumerate()
 Extend()
 """
 
-    python_medium_level_questions = """Advanced Data Structures:
+    python_medium_level_topics = """Advanced Data Structures:
 Nested dictionaries and lists
 Dictionary comprehensions
 Object-Oriented Programming (OOP):
@@ -390,7 +424,7 @@ Overfitting and underfitting, confounding factors
 Import CSV files from a URL via Pandas
 """
 
-    python_hard_level_questions = """Asynchronous Handling: multithreading,  multiprocessing async IO functionality and differences
+    python_hard_level_topics = """Asynchronous Handling: multithreading,  multiprocessing async IO functionality and differences
 Pydantic: used to define custom data types
 Memory management and garbage collection
 Advanced Pandas:
@@ -435,7 +469,7 @@ Decorators and Generators: Use of decorators, understanding generators with yiel
 Handling complex data types and structures
 """
 
-    statistics_easy_level_questions = """Descriptive Statistics:
+    statistics_easy_level_topics = """Descriptive Statistics:
 Central Tendency: Mean, median, mode.
 Variability: Range, variance, standard deviation, interquartile range.
 Frequency Distributions: Tables, histograms, frequency polygons.
@@ -466,7 +500,7 @@ The Simpson’s Paradox
 Selection Bias
 """
 
-    statistics_medium_level_questions = """Inferential Statistics:
+    statistics_medium_level_topics = """Inferential Statistics:
 Point and Interval Estimations: Estimating population parameters and constructing confidence intervals.
 Hypothesis Testing: Null and alternative hypotheses, type I and II errors, power of a test.
 Z-tests, T-tests, Chi-squared Tests: Applications and assumptions behind each test.
@@ -497,7 +531,7 @@ Designing Experiments: Control group, randomization, blinding, replication.
 Validity and Reliability: Ensuring accurate and consistent measurements.
 """
 
-    statistics_hard_level_questions = """Multivariate Statistics:
+    statistics_hard_level_topics = """Multivariate Statistics:
 Factor Analysis: Reducing dimensionality, factor extraction.
 Cluster Analysis: Hierarchical, k-means, and density-based clustering.
 Discriminant Analysis: Classification of observations into predefined categories.
@@ -519,4 +553,49 @@ Advanced Probability:
 Stochastic Processes: Markov chains, Poisson processes.
 Queuing Theory: Analyzing systems involving waiting lines or queues.
 Bayesian Statistics: Prior distributions, posterior updates, Bayesian networks
+"""
+
+    ml_easy_level_topics = """Entry Level:Entry-level assessments should focus on foundational concepts and basic application of machine learning techniques.
+Linear Regression: Understanding the concept of linear regression, its assumptions, and how to implement it using libraries like scikit-learn.
+Classification: Basics of classification algorithms such as Logistic Regression, Decision Trees, and Naive Bayes. 
+Assess understanding of concepts like accuracy, precision, and recall, F-1 Score, confusion matrix. 
+Application based model evaluation
+Overfitting, underfitting, bias variance tradeoff, early stopping
+Feature Engineering: Simple feature engineering techniques like one-hot encoding, handling missing values, and feature scaling, 
+Model Evaluation: Basic understanding of cross-validation, train-test split, and evaluation metrics like accuracy and confusion matrix.
+Weight initializations, Optimizers, Gradient descent (mini batch, stochastic) concept of momentum, activation functions like reLU, geLU, Leaky reLU, learning rate concepts like variable LR, Scheduling LR, 
+Grid Search CV for hyper parameter Tuning
+Supervised and self supervised learning, unsupervised learning
+Basic concepts regarding Optimizers, activation functions, learning rat,, loss/cost functions, batch size, epochs and iterations
+Basic knowledge of data visualization
+"""
+    ml_medium_level_topics = """Medium-level assessments should delve deeper into algorithm selection, feature engineering, and model evaluation.
+
+Handling Imbalanced data, Data Standardization, Data Normalization including oversampling, undersampling
+Data Mining techniques
+Dimensionality Reduction: Understanding techniques like PCA (Principal Component Analysis) and t-SNE (t-distributed Stochastic Neighbor Embedding).
+Gradient Boosting Machines (GBM). 
+Bagging techniques
+Types of optimizers such as Adam, AdaGrad, RMS Prop, advantages and disadvantages
+Assess understanding of hyperparameter tuning.
+Time Series Analysis: Basics of time series data handling, techniques like ARIMA (AutoRegressive Integrated Moving Average), and forecasting.
+Ensemble Methods: Understanding bagging, boosting, and stacking techniques.
+Weight initializations such as He Initialization etc.
+Gradient descent (mini batch, stochastic) concept of momentum, activation functions, learning rate concepts like variable LR, Scheduling LR, 
+Basic understanding of neural networks, activation functions, and libraries like TensorFlow or PyTorch, Scikit Learn
+Data Visualization and data storytelling
+"""
+
+    ml_hard_level_topics = """Advanced-level assessments should cover advanced techniques, optimization strategies, and real-world problem-solving.
+
+Advanced level understanding of frameworks like transformers, pytorch
+Advanced Forecast modeling 
+Advanced Classification: More complex classification algorithms such as Support Vector Machines (SVM)
+Hyperparameter Optimization: Understanding techniques like grid search, random search, and Bayesian optimization for hyperparameter tuning.
+Transfer Learning: Understanding transfer learning concepts and practical implementation using pre-trained models like VGG, ResNet, or BERT.
+Natural Language Processing (NLP): text preprocessing, sentiment analysis, named entity recognition, and topic modeling.
+Familiarity with AutoML tools and platforms for automating the machine learning pipeline, including feature engineering, model selection, and hyperparameter optimization, to accelerate the development of machine learning models.
+Handling semantic similarity between data
+Mastery of data visualization libraries like Matplotlib, Seaborn, and Plotly to create insightful visualizations that facilitate data exploration, pattern identification, and communication of results to stakeholders.
+Familiarity with geospatial data formats and libraries like GeoPandas, Shapely, and Folium for analyzing and visualizing spatial data, including spatial clustering, geospatial interpolation, and location-based predictive modeling.
 """

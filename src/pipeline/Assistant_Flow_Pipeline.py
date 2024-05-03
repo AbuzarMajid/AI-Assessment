@@ -17,7 +17,7 @@ class AssistantFlow:
     def assisstant_flow(self, difficulty_level, category, number_of_questions, skill_name):
         try:
             assistant_obj = Assistants(client=self.client, model_name=self.model_name, skill_name=skill_name)
-            thread_id, assisstant_id = assistant_obj.question_generation()
+            thread_id, assisstant_id = assistant_obj.fetch_assisstant_id()
 
             if skill_name == "sql":
                 content = f"Generate {number_of_questions} {difficulty_level} questions for the category {category}. Make sure to include query and table if needed only. Answer type must only be coding or/and Audio-Video explanation. Use different answer types for different questions. For audio/video answers question should not take more than 2.5 mins to answer. For coding type questions give enough time to candidate so that he can figure out the solution"
@@ -41,7 +41,6 @@ class AssistantFlow:
 
             while status:
                 retrieved_run = create_run.retrieve_run(run_id=run.id)
-                logging.info('Run retrieved successfully')
                 logging.info(f'Status: {retrieved_run.status}')
 
                 if retrieved_run.status in ['queued', 'in_progress']:
