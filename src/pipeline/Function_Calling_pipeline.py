@@ -16,12 +16,8 @@ class FunctionCallingPipeline:
 
     def function_calling(self):
         try:
-            logging.info('Entered the Assistant')
             func_call_vars = FunctionCalling(client=self.client, run_retrieved=self.run_retrieved)
             function = func_call_vars.function_name()
-            print(function)
-            logging.info('Function name fetched')
-
             function_calling_response_obj = FunctonCallingResponse(
                             client=self.client,
                             model_name=self.model_name,
@@ -31,11 +27,10 @@ class FunctionCallingPipeline:
             if hasattr(function_calling_response_obj, function):
                 func_to_call = getattr(function_calling_response_obj, function)
                 response = func_to_call()
-                print(response)
+
                 logging.info(f'{function} function called')
 
                 completion = func_call_vars.submit_tool_output(thread_id=self.thread_id, function_response=response, run_id=self.run_id)
-                logging.info('Function calling response submitted seccessfully')
 
                 return completion
         except Exception as e:

@@ -25,8 +25,10 @@ class Messages:
             messages = self.client.beta.threads.messages.list(
             thread_id= self.thread_id)
             response = (messages)
+
             logging.info('Successfully retrieved message')
-            return (response.data)
+            
+            return (response.data[0].content[0].text.value)
         except Exception as e:
             raise CustomExcetions(e, sys)
         

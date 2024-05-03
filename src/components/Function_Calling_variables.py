@@ -19,25 +19,31 @@ class FunctionCalling:
     
     def _tool_call_id(self):
         try:
-            tool_call_id = self.run_retrieved.required_action.submit_tool_outputs.tool_calls[0]
-            print(tool_call_id)
+            tool_call_ids = []
+            for toll_call in (self.run_retrieved.required_action.submit_tool_outputs.tool_calls):
+                tool_call_ids.append(toll_call.id)
+
             logging.info('Tool Call ID retrieved')
-            return tool_call_id.id
+            return tool_call_ids
         except Exception as e:
             raise CustomExcetions(e, sys)
 
     def submit_tool_output(self, thread_id, function_response, run_id):
         try:
+            tool_outputs = []
+            list_of_ids = self._tool_call_id()
+            # for call_id in list_of_ids:
+            for tool_call_id in list_of_ids:
+                tool_output = {
+                    "tool_call_id": tool_call_id,
+                    "output": function_response
+                }
+                tool_outputs.append(tool_output)
             run = self.client.beta.threads.runs.submit_tool_outputs(
             thread_id=thread_id,
             run_id=run_id,
-            tool_outputs=[
-                {
-                    "tool_call_id": self._tool_call_id(),
-                    "output": function_response
-                }
-            ],
-        )   
+            tool_outputs=tool_outputs
+            )   
             logging.info("Successfully Function Response Submitted")
             return run.status
         except Exception as e:
