@@ -20,9 +20,9 @@ client = OpenAI(api_key=api_key)
 
 
 class AssistantResponseRequest(BaseModel):
-    skill_list: List[str]
-    number_of_questions: int
-    difficulty: str
+    skill_list: List
+    # number_of_questions: int
+    # difficulty: str
 
 app = FastAPI()
 
@@ -30,21 +30,29 @@ app = FastAPI()
 async def questions_generation(request: AssistantResponseRequest):
     try:
         final_results = []
-        assistant_obj = AssistantFlow(client=client, model_name=models[1])
+        assistant_obj = AssistantFlow(client=client, model_name=models[0])
+        print("kjbfyuerfu")
+        # return request.skill_list
         # Use ThreadPoolExecutor as a context manager
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = []
-            for skill in request.skill_list:
-                category = categories(skill_name=skill.lower(), number_of_questions=request.number_of_questions)
+            for skill_dict in request.skill_list:
+                print(skill_dict)
+                skill = skill_dict["skill"]
+                number_of_questions = skill_dict["number_of_questions"]
+                difficulty = skill_dict["difficulty"]
+                answer_type = skill_dict["answer_type"]
+
+                # category = categories(skill_name=skill.lower(), number_of_questions=number_of_questions)
                 future = executor.submit(assistant_obj.assisstant_flow, 
-                                          difficulty_level=request.difficulty,
-                                          category=category, 
-                                          number_of_questions=request.number_of_questions, 
-                                          skill_name=skill)
+                                          difficulty_level=difficulty, 
+                                          number_of_questions=number_of_questions, 
+                                          skill_name=skill,
+                                          answer_type = answer_type)
                 futures.append(future)
 
             # Wait for all tasks to complete
-            for future in concurrent.futures.as_completed(futures):
+            for future in futures:
                     result = future.result()
                     if result:
                         final_results.append(json.loads(result))

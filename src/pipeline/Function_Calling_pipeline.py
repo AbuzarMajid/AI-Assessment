@@ -6,13 +6,14 @@ from src.components.Function_Calling_Response import FunctonCallingResponse
 from src.components.Function_Calling_variables import FunctionCalling
 
 class FunctionCallingPipeline:
-    def __init__(self, run_retrieved, client:OpenAI, run_id, thread_id, model_name, skill_name):
+    def __init__(self, run_retrieved, client:OpenAI, run_id, thread_id, model_name, skill_name, answer_type):
         self.client = client
         self.run_retrieved = run_retrieved
         self.thread_id = thread_id
         self.run_id = run_id
         self.model_name = model_name
         self.skill_name = skill_name
+        self.answer_type = answer_type
 
     def function_calling(self):
         try:
@@ -21,7 +22,8 @@ class FunctionCallingPipeline:
             function_calling_response_obj = FunctonCallingResponse(
                             client=self.client,
                             model_name=self.model_name,
-                            skill_name=self.skill_name 
+                            skill_name=self.skill_name,
+                            answer_type=self.answer_type 
                             )
  
             if hasattr(function_calling_response_obj, function):

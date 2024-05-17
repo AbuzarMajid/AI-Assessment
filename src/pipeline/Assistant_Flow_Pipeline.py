@@ -14,19 +14,21 @@ class AssistantFlow:
         self.model_name = model_name 
         self.role = "user"
     
-    def assisstant_flow(self, difficulty_level, category, number_of_questions, skill_name):
+    def assisstant_flow(self, difficulty_level, number_of_questions, skill_name, answer_type):
         try:
-            assistant_obj = Assistants(client=self.client, model_name=self.model_name, skill_name=skill_name)
-            thread_id, assisstant_id = assistant_obj.fetch_assisstant_id()
+            assistant_obj = Assistants(client=self.client, model_name=self.model_name, skill_name=skill_name, answer_type=answer_type)
+            assisstant_id, thread_id = assistant_obj.question_generation()
 
             if skill_name == "sql":
-                content = f"Generate {number_of_questions} {difficulty_level} questions for the category {category}. Make sure to include query and table if needed only. Answer type must only be coding or/and Audio-Video explanation. Use different answer types for different questions. For audio/video answers question should not take more than 2.5 mins to answer. For coding type questions give enough time to candidate so that he can figure out the solution"
-            if skill_name == "python":
-                content = f"Generate {number_of_questions} {difficulty_level} questions for the category {category}. Make sure to include code snippet if needed. Answer type must only be coding or/and Audio-Video explanation. Use different answer types for different questions."
+                content = f"Generate {number_of_questions} {difficulty_level} level questions of {answer_type}."
+            if skill_name == "python" and answer_type == "audio":
+                content = f"Generate {number_of_questions} {difficulty_level} level questions. Make sure to cover purely the conceptual side of python concepts. Answer type must be audio"
+            if skill_name == "python" and answer_type == "coding":
+                content = f"Generate {number_of_questions} {difficulty_level} level questions. Make sure to include code snippet if needed."
             if skill_name == "statistics":
-                content = f"Generate {number_of_questions} {difficulty_level} questions for the category {category}. Make sure no questions would take more than 2.5 minutes to answer. Answer type must only be Audio-Video explanation strictly."
+                content = f"Generate {number_of_questions} {difficulty_level} level questions."
             if skill_name == "ml":
-                content = f"Generate {number_of_questions} {difficulty_level} questions for the category {category}. Make sure no questions would take more than 2.5 minutes to answer. Answer type must only be Audio-Video explanation strictly."
+                content = f"Generate {number_of_questions} {difficulty_level} level questions."
 
 
             create_message = Messages(client=self.client, thread_id=thread_id)
@@ -38,17 +40,18 @@ class AssistantFlow:
             logging.info('Run created successfully')
 
             status = True
-
-            while status:
+            retries = 0
+            while status and retries > 10:
                 retrieved_run = create_run.retrieve_run(run_id=run.id)
                 logging.info(f'Status: {retrieved_run.status}')
-
+                print(type(retrieved_run.status))
                 if retrieved_run.status in ['queued', 'in_progress']:
                     time.sleep(3)
                     
                     continue
 
                 elif retrieved_run.status == 'requires_action':
+                    print("entered--------------------------------")
                     if retrieved_run.required_action.submit_tool_outputs.tool_calls[0].function.name == "finish_session":
                         return "Thanks"
                     
@@ -58,7 +61,8 @@ class AssistantFlow:
                                                                     run_id=run.id,
                                                                     thread_id=thread_id,
                                                                     model_name=self.model_name,
-                                                                    skill_name=skill_name
+                                                                    skill_name=skill_name,
+                                                                    answer_type=answer_type
                                                                     )
                         function_calling_obj.function_calling()
                         continue
@@ -71,7 +75,7 @@ class AssistantFlow:
                     return (show_message)
 
                 elif retrieved_run.status in ['cancelling', 'cancelled', 'failed', 'expired']:
-                    user_message = f'Run Status: {retrieved_run.status}'
+                    user_message = f"Run Status: {retrieved_run.status}"
                     logging.info(user_message)
                     return user_message
                 

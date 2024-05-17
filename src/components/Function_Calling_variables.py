@@ -30,6 +30,7 @@ class FunctionCalling:
         try:
             tool_outputs = []
             list_of_ids = self._tool_call_id()
+            print(len(list_of_ids))
             # for call_id in list_of_ids:
             for tool_call_id in list_of_ids:
                 tool_output = {
